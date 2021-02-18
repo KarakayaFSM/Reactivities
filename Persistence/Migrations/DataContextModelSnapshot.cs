@@ -3,7 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Reactivities.Persistence;
+using Persistence;
 
 namespace Persistence.Migrations
 {
@@ -14,11 +14,11 @@ namespace Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.1");
+                .HasAnnotation("ProductVersion", "5.0.0");
 
-            modelBuilder.Entity("Reactivities.Domain.Activity", b =>
+            modelBuilder.Entity("Domain.Activity", b =>
                 {
-                    b.Property<Guid>("id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
@@ -40,7 +40,7 @@ namespace Persistence.Migrations
                     b.Property<string>("Venue")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Activities");
                 });
