@@ -12,6 +12,7 @@ namespace API.Services
     public class TokenService
     {
         private readonly IConfiguration _config;
+
         public TokenService(IConfiguration config)
         {
             _config = config;
@@ -21,9 +22,9 @@ namespace API.Services
         {
             var claims = new List<Claim>
             {
-                new Claim (ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Email, user.Email)
+                new(ClaimTypes.Name, user.UserName),
+                new(ClaimTypes.NameIdentifier, user.Id),
+                new(ClaimTypes.Email, user.Email)
             };
 
             var key = new SymmetricSecurityKey

@@ -16,14 +16,14 @@ namespace API.Extensions
         private readonly IHostEnvironment _environment;
 
         public ExceptionMiddleware(RequestDelegate next,
-                                   ILogger<ExceptionMiddleware> logger,
-                                   IHostEnvironment environment)
+            ILogger<ExceptionMiddleware> logger,
+            IHostEnvironment environment)
         {
-            this._next = next;
-            this._logger = logger;
-            this._environment = environment;
+            _next = next;
+            _logger = logger;
+            _environment = environment;
         }
-
+    
         public async Task InvokeAsync(HttpContext context)
         {
             try
@@ -34,20 +34,20 @@ namespace API.Extensions
             {
                 _logger.LogError(ex, ex.Message);
 
-                var statusCode = (int)HttpStatusCode.InternalServerError;
+                var statusCode = (int) HttpStatusCode.InternalServerError;
 
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = statusCode;
 
-                var response = _environment.IsDevelopment() ?
-                        getDeveloperException(ex, statusCode) :
-                        getUserException(statusCode);
-                        
+                var response = _environment.IsDevelopment()
+                    ? getDeveloperException(ex, statusCode)
+                    : getUserException(statusCode);
+
                 var options = new JsonSerializerOptions
-                                {PropertyNamingPolicy = JsonNamingPolicy.CamelCase};
+                    {PropertyNamingPolicy = JsonNamingPolicy.CamelCase};
 
                 var json = JsonSerializer
-                                .Serialize(response, options);
+                    .Serialize(response, options);
 
                 await context.Response.WriteAsync(json);
             }
@@ -55,14 +55,12 @@ namespace API.Extensions
 
         private static AppException getUserException(int statusCode)
         {
-            return new AppException(statusCode, "Server Error");
+            return new(statusCode, "Server Error");
         }
 
         private static AppException getDeveloperException(Exception ex, int statusCode)
         {
-            return new AppException(statusCode,
-                                                     ex.Message,
-                                                     ex.StackTrace?.ToString());
+            return new(statusCode, ex.Message, ex.StackTrace);
         }
     }
 }
